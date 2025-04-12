@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Newsy.Api.Infrastructure.Persistence;
 namespace Newsy.Api.Features.Author.Register;
 
-public class RegisterEndpoint : Endpoint<RegisterRequest>
+public class RegisterEndpoint : EndpointWithMapper<RegisterRequest, RegisterAuthorMapper>
 {
     private readonly NewsyDbContext _dbContext;
 
@@ -27,11 +27,7 @@ public class RegisterEndpoint : Endpoint<RegisterRequest>
             return;
         }
 
-        var author = new Domain.Author
-        {
-            Username = req.Username,
-            PasswordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(req.Password)
-        };
+        var author = Map.ToEntity(req);
 
         await _dbContext.Authors.AddAsync(author, ct);
         await _dbContext.SaveChangesAsync(ct);

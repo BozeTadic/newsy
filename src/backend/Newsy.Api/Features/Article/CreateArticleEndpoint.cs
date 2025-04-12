@@ -4,7 +4,7 @@ using Newsy.Api.Infrastructure.Persistence;
 
 namespace Newsy.Api.Features.Article;
 
-public class CreateArticleEndpoint : Endpoint<CreateArticleRequest>
+public class CreateArticleEndpoint : EndpointWithMapper<CreateArticleRequest, ArticleRequestMapper>
 {
     private readonly NewsyDbContext _dbContext;
 
@@ -28,17 +28,11 @@ public class CreateArticleEndpoint : Endpoint<CreateArticleRequest>
             return;
         }
 
-        var article = new Domain.Article
-        {
-            Title = req.Title,
-            Content = req.Content,
-            AuthorId = int.Parse(userId)
-        };
+        var article = Map.ToEntity(req, userId);
 
         var createdArticle = await _dbContext.Articles.AddAsync(article, ct);
         await _dbContext.SaveChangesAsync(ct);
 
-        
         await SendCreatedAtAsync<GetArticleEndpoint>($"api/articles/{createdArticle.Entity.Id}",
             new ArticleResponse(createdArticle.Entity.Id, article.Title, article.Content, null), cancellation: ct);
     }

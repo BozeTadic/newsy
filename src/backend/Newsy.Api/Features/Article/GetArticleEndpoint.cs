@@ -4,7 +4,7 @@ using Newsy.Api.Infrastructure.Persistence;
 
 namespace Newsy.Api.Features.Article;
 
-public class GetArticleEndpoint : EndpointWithoutRequest<ArticleResponse>
+public class GetArticleEndpoint : EndpointWithoutRequest<ArticleResponse, ArticleResponseMapper>
 {
     private readonly NewsyDbContext _dbContext;
 
@@ -32,7 +32,7 @@ public class GetArticleEndpoint : EndpointWithoutRequest<ArticleResponse>
             return;
         }
 
-        var response = new ArticleResponse(article.Id, article.Title, article.Content, article.Author?.Username);
+        var response = Map.FromEntity(article);
 
         await SendOkAsync(response, ct);
     }

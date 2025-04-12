@@ -4,7 +4,7 @@ using Newsy.Api.Infrastructure.Persistence;
 
 namespace Newsy.Api.Features.Article;
 
-public class GetArticlesEndpoint : EndpointWithoutRequest<List<ArticleResponse>>
+public class GetArticlesEndpoint : EndpointWithoutRequest<List<ArticleResponse>, ArticleResponseMapper>
 {
     private readonly NewsyDbContext _dbContext;
 
@@ -29,7 +29,7 @@ public class GetArticlesEndpoint : EndpointWithoutRequest<List<ArticleResponse>>
         }
 
         var response = articles
-            .Select(a => new ArticleResponse(a.Id, a.Title, a.Content, a.Author?.Username))
+            .Select(Map.FromEntity)
             .ToList();
 
         await SendOkAsync(response, ct);
