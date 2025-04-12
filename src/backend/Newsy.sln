@@ -1,0 +1,51 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aspire", "aspire", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A31953F8-1AF8-4529-BC00-72EF2554ECE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newsy.AppHost", "aspire\Newsy.AppHost\Newsy.AppHost.csproj", "{E7B2D17F-9651-F0B3-38D7-3A6C2049D427}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newsy.ServiceDefaults", "aspire\Newsy.ServiceDefaults\Newsy.ServiceDefaults.csproj", "{265D8C55-D6DB-71BA-F913-63146D2882E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newsy.Api.Tests.Unit", "tests\Newsy.Api.Tests.Unit\Newsy.Api.Tests.Unit.csproj", "{4A409BA5-39A2-BE64-6EA8-1897F2FE8642}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newsy.Api", "Newsy.Api\Newsy.Api.csproj", "{E63C3BDE-D0F6-5A80-B528-AF76362604A3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7B2D17F-9651-F0B3-38D7-3A6C2049D427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7B2D17F-9651-F0B3-38D7-3A6C2049D427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7B2D17F-9651-F0B3-38D7-3A6C2049D427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7B2D17F-9651-F0B3-38D7-3A6C2049D427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{265D8C55-D6DB-71BA-F913-63146D2882E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{265D8C55-D6DB-71BA-F913-63146D2882E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{265D8C55-D6DB-71BA-F913-63146D2882E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{265D8C55-D6DB-71BA-F913-63146D2882E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A409BA5-39A2-BE64-6EA8-1897F2FE8642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A409BA5-39A2-BE64-6EA8-1897F2FE8642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A409BA5-39A2-BE64-6EA8-1897F2FE8642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A409BA5-39A2-BE64-6EA8-1897F2FE8642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E63C3BDE-D0F6-5A80-B528-AF76362604A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E63C3BDE-D0F6-5A80-B528-AF76362604A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E63C3BDE-D0F6-5A80-B528-AF76362604A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E63C3BDE-D0F6-5A80-B528-AF76362604A3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E7B2D17F-9651-F0B3-38D7-3A6C2049D427} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{265D8C55-D6DB-71BA-F913-63146D2882E4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{4A409BA5-39A2-BE64-6EA8-1897F2FE8642} = {A31953F8-1AF8-4529-BC00-72EF2554ECE8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89A00ADE-DCBE-47B1-AE4C-1F3FD7A86E3B}
+	EndGlobalSection
+EndGlobal
