@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using FluentValidation;
 
-namespace Newsy.Api.Features.Author.Register;
+namespace Newsy.Api.Features.Auth.Register;
 
 public class RegisterRequestValidator : Validator<RegisterRequest>
 {

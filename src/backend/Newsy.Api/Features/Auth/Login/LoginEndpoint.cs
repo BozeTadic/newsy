@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Newsy.Api.Infrastructure.Persistence;
 
-namespace Newsy.Api.Features.Author.Login;
+namespace Newsy.Api.Features.Auth.Login;
 
 public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
 {

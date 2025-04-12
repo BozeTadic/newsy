@@ -1,7 +1,8 @@
 ﻿using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 using Newsy.Api.Infrastructure.Persistence;
-namespace Newsy.Api.Features.Author.Register;
+
+namespace Newsy.Api.Features.Auth.Register;
 
 public class RegisterEndpoint : EndpointWithMapper<RegisterRequest, RegisterAuthorMapper>
 {

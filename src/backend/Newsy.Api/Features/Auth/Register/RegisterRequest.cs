@@ -1,3 +1,3 @@
-﻿namespace Newsy.Api.Features.Author.Register;
+﻿namespace Newsy.Api.Features.Auth.Register;
 
 public record RegisterRequest(string Username, string Password);
