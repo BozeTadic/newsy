@@ -1,30 +1,28 @@
 ﻿using FastEndpoints;
-using Microsoft.EntityFrameworkCore;
-using Newsy.Api.Infrastructure.Persistence;
+using Newsy.Api.Infrastructure.Persistence.UnitOfWork;
 
-namespace Newsy.Api.Features.Article;
+namespace Newsy.Api.Features.Articles;
 
 public class GetArticleEndpoint : EndpointWithoutRequest<ArticleResponse, ArticleResponseMapper>
 {
-    private readonly NewsyDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetArticleEndpoint(NewsyDbContext dbContext, IConfiguration configuration)
+    public GetArticleEndpoint(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
 
     public override void Configure()
     {
         Get("/api/articles/{id}");
+        Options(x => x.WithName("GetArticleEndpoint"));
     }
 
     public override async Task HandleAsync(CancellationToken ct)
     {
         var id = Route<int>("id");
 
-        var article = await _dbContext.Articles
-            .Include(a => a.Author)
-            .FirstOrDefaultAsync(a => a.Id == id, ct);
+        var article = await _unitOfWork.ArticleRepository.GetAsync(id);
 
         if (article == null)
         {

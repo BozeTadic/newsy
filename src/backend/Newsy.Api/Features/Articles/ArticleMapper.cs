@@ -1,6 +1,6 @@
 ﻿using FastEndpoints;
 
-namespace Newsy.Api.Features.Article;
+namespace Newsy.Api.Features.Articles;
 
 public class ArticleRequestMapper : RequestMapper<CreateArticleRequest, Domain.Article>
 {

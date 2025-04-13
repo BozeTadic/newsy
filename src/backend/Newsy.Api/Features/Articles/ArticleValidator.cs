@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using FluentValidation;
 
-namespace Newsy.Api.Features.Article;
+namespace Newsy.Api.Features.Articles;
 
 public class ArticleValidator : Validator<CreateArticleRequest>
 {

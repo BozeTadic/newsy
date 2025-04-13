@@ -1,16 +1,15 @@
 ﻿using FastEndpoints;
-using Microsoft.EntityFrameworkCore;
-using Newsy.Api.Infrastructure.Persistence;
+using Newsy.Api.Infrastructure.Persistence.UnitOfWork;
 
 namespace Newsy.Api.Features.Auth.Register;
 
 public class RegisterEndpoint : EndpointWithMapper<RegisterRequest, RegisterAuthorMapper>
 {
-    private readonly NewsyDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public RegisterEndpoint(NewsyDbContext dbContext)
+    public RegisterEndpoint(IUnitOfWork unitOfWork)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
     }
 
     public override void Configure()
@@ -21,7 +20,8 @@ public class RegisterEndpoint : EndpointWithMapper<RegisterRequest, RegisterAuth
 
     public override async Task HandleAsync(RegisterRequest req, CancellationToken ct)
     {
-        if (await _dbContext.Authors.AnyAsync(a => a.Username == req.Username, cancellationToken: ct))
+        var registeredAuthor = await _unitOfWork.AuthorRepository.GetAsync(req.Username);
+        if (registeredAuthor != null)
         {
             AddError("User already exists.");
             await SendErrorsAsync(400, ct);
@@ -30,9 +30,16 @@ public class RegisterEndpoint : EndpointWithMapper<RegisterRequest, RegisterAuth
 
         var author = Map.ToEntity(req);
 
-        await _dbContext.Authors.AddAsync(author, ct);
-        await _dbContext.SaveChangesAsync(ct);
+        bool authorCreated = await _unitOfWork.AuthorRepository.CreateAsync(author);
 
-        await SendOkAsync(ct);
+        if (!authorCreated)
+        {
+            AddError("Internal server error.");
+            AddError("Failed to create user.");
+            await SendErrorsAsync(500, ct);
+            return;
+        }
+
+        await SendAsync(new EmptyResponse(), 201, ct);
     }
 }

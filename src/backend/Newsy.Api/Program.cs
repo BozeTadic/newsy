@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newsy.Api.Infrastructure.Persistence;
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using Newsy.Api.Infrastructure.Persistence.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +12,9 @@ builder.AddServiceDefaults();
 
 
 builder.Services
-    .AddDbContext<NewsyDbContext>(options =>
+    .AddDbContext<IDbContext, NewsyDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("LocalPostgresConnectionString")));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
 {

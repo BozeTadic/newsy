@@ -3,19 +3,18 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Newsy.Api.Infrastructure.Persistence;
+using Newsy.Api.Infrastructure.Persistence.UnitOfWork;
 
 namespace Newsy.Api.Features.Auth.Login;
 
 public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
 {
-    private readonly NewsyDbContext _dbContext;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IConfiguration _configuration;
 
-    public LoginEndpoint(NewsyDbContext dbContext, IConfiguration configuration)
+    public LoginEndpoint(IUnitOfWork unitOfWork, IConfiguration configuration)
     {
-        _dbContext = dbContext;
+        _unitOfWork = unitOfWork;
         _configuration = configuration;
     }
 
@@ -27,7 +26,7 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
 
     public override async Task HandleAsync(LoginRequest req, CancellationToken ct)
     {
-        var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Username == req.Username, cancellationToken: ct);
+        var author = await _unitOfWork.AuthorRepository.GetAsync(req.Username);
 
         if (author == null || !BCrypt.Net.BCrypt.EnhancedVerify(req.Password, author.PasswordHash))
         {
