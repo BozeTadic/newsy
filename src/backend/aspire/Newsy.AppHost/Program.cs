@@ -1,6 +1,7 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-// * Postgres *
+var redis = builder.AddRedis("newsy-redis");
+
 var user = builder.AddParameter("postgres-user");
 var password = builder.AddParameter("postgres-password", secret: true);
 
@@ -11,6 +12,8 @@ var newsyDb = postgresDbServer.AddDatabase("newsy-local-postgres");
 
 builder.AddProject<Projects.Newsy_Api>("newsy-api")
     .WithReference(newsyDb)
-    .WaitFor(newsyDb);
+    .WithReference(redis)
+    .WaitFor(newsyDb)
+    .WaitFor(redis);
 
 builder.Build().Run();

@@ -11,5 +11,5 @@ public class PaginationResult<T> where T : class
 
     public int PageNumber { get; private set; }
     public int PageSize { get; private set; }
-    public IReadOnlyList<T> Items { get; private set; }
+    public List<T> Items { get; private set; }
 }

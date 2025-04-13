@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newsy.Api.Infrastructure.Persistence;
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using Microsoft.Extensions.Caching.Hybrid;
 using Newsy.Api.Infrastructure.Persistence.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,16 @@ builder.Services
     .AddDbContext<IDbContext, NewsyDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("LocalPostgresConnectionString")));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddHybridCache(options => 
+    options.DefaultEntryOptions = new HybridCacheEntryOptions()
+    {
+        LocalCacheExpiration = TimeSpan.FromMinutes(5),
+        Expiration = TimeSpan.FromMinutes(15)
+    }
+);
+
+builder.AddRedisDistributedCache("newsy-redis");
 
 builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
 {
@@ -53,6 +64,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseDefaultExceptionHandler();
 app.UseFastEndpoints();
 
 app.Run();
