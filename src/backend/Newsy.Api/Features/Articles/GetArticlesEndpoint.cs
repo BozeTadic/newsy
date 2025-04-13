@@ -1,9 +1,10 @@
 ﻿using FastEndpoints;
+using Newsy.Api.Common.Pagination;
 using Newsy.Api.Infrastructure.Persistence.UnitOfWork;
 
 namespace Newsy.Api.Features.Articles;
 
-public class GetArticlesEndpoint : EndpointWithoutRequest<List<ArticleResponse>, ArticleResponseMapper>
+public class GetArticlesEndpoint : Endpoint<PaginationQuery, PaginationResult<ArticleResponse>, ArticleResponseMapper>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -18,9 +19,9 @@ public class GetArticlesEndpoint : EndpointWithoutRequest<List<ArticleResponse>,
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(CancellationToken ct)
+    public override async Task HandleAsync(PaginationQuery query, CancellationToken ct)
     {
-        var articles = await _unitOfWork.ArticleRepository.GetAllAsync();
+        var articles = await _unitOfWork.ArticleRepository.GetAllAsync(query.PageNumber, query.PageSize);
 
         if (articles.Count == 0)
         {
@@ -28,9 +29,9 @@ public class GetArticlesEndpoint : EndpointWithoutRequest<List<ArticleResponse>,
             return;
         }
 
-        var response = articles
-            .Select(Map.FromEntity)
-            .ToList();
+        var response = new PaginationResult<ArticleResponse>(articles.Select(Map.FromEntity).ToList(), 
+            query.PageNumber,
+            query.PageSize);
 
         await SendOkAsync(response, ct);
     }

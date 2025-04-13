@@ -8,5 +8,7 @@ public interface IArticleRepository
 
     Task<List<Article>> GetAllAsync();
 
+    Task<List<Article>> GetAllAsync(int pageNumber, int pageSize);
+
     Task<Article?> CreateAsync(Article article);
 }

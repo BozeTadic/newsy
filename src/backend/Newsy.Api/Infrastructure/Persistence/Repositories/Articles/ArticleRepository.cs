@@ -20,7 +20,19 @@ internal class ArticleRepository : IArticleRepository
 
     public async Task<List<Article>> GetAllAsync()
     {
-        return await _dbContext.Set<Article>().Include(a => a.Author).ToListAsync();
+        return await _dbContext.Set<Article>()
+            .Include(a => a.Author)
+            .ToListAsync();
+    }
+
+    public async Task<List<Article>> GetAllAsync(int pageNumber, int pageSize)
+    {
+        return await _dbContext.Set<Article>()
+            .Include(a => a.Author)
+            .OrderByDescending(a => a.CreatedAt)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
     }
 
     public async Task<Article?> CreateAsync(Article article)
