@@ -46,6 +46,10 @@ app.MapDefaultEndpoints();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerGen();
+
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<NewsyDbContext>();
+    dbContext.Database.Migrate();
 }
 
 app.UseHttpsRedirection();
