@@ -14,7 +14,7 @@ builder.AddServiceDefaults();
 
 builder.Services
     .AddDbContext<IDbContext, NewsyDbContext>(options =>
-        options.UseNpgsql(builder.Configuration.GetConnectionString("LocalPostgresConnectionString")));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("newsy-local-postgres")));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddHybridCache(options => 
