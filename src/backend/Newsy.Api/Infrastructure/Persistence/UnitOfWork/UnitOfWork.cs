@@ -3,7 +3,7 @@ using Newsy.Api.Infrastructure.Persistence.Repositories.Authors;
 
 namespace Newsy.Api.Infrastructure.Persistence.UnitOfWork;
 
-internal class UnitOfWork : IUnitOfWork
+public class UnitOfWork : IUnitOfWork
 {
     private readonly IDbContext? _dbContext;
     private IArticleRepository? _articleRepository;

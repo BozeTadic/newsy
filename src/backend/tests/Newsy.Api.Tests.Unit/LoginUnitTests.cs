@@ -27,6 +27,6 @@ public class LoginUnitTests
 
         //Assert
         Assert.NotNull(response);
-        Assert.Equal(403, response.StatusCode);
+        Assert.Equal(401, response.StatusCode);
     }
 }

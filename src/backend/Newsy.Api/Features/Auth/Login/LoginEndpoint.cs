@@ -30,7 +30,7 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
 
         if (author == null || !BCrypt.Net.BCrypt.EnhancedVerify(req.Password, author.PasswordHash))
         {
-            await SendForbiddenAsync(ct);
+            await SendUnauthorizedAsync(ct);
             return;
         }
 
