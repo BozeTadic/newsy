@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.DependencyInjection;
 using Newsy.Api.Infrastructure.Persistence;
+using Newsy.Api.Infrastructure.Persistence.Repositories.Articles;
+using Newsy.Api.Infrastructure.Persistence.Repositories.Authors;
 
 namespace Newsy.Api.Tests.Integration.Utilities;
 
@@ -31,6 +33,8 @@ public class TestApplicationFactory : WebApplicationFactory<Program>
                 options.UseInMemoryDatabase("newsy-in-memory-db");
                 options.UseInternalServiceProvider(provider);
             });
+            services.AddScoped<IArticleRepository, ArticleRepository>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
 
             var cacheDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(HybridCache));
 

@@ -1,5 +1,4 @@
 ﻿using FastEndpoints;
-using Microsoft.Extensions.Caching.Hybrid;
 using Newsy.Api.Infrastructure.Persistence.UnitOfWork;
 
 namespace Newsy.Api.Features.Articles;
@@ -7,12 +6,10 @@ namespace Newsy.Api.Features.Articles;
 public class GetArticleEndpoint : EndpointWithoutRequest<ArticleResponse, ArticleResponseMapper>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly HybridCache _cache;
 
-    public GetArticleEndpoint(IUnitOfWork unitOfWork, HybridCache cache)
+    public GetArticleEndpoint(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _cache = cache;
     }
 
     public override void Configure()
@@ -26,23 +23,16 @@ public class GetArticleEndpoint : EndpointWithoutRequest<ArticleResponse, Articl
     {
         var id = Route<int>("id");
 
-        var cacheKey = $"article-{id}";
+        var article = await _unitOfWork.ArticleRepository.GetAsync(id);
 
-        var cachedResponse = await _cache.GetOrCreateAsync(cacheKey, async _ =>
-        {
-            var article = await _unitOfWork.ArticleRepository.GetAsync(id);
-
-            return article == null ? null : Map.FromEntity(article);
-        },
-            cancellationToken: ct);
-
-        if (cachedResponse == null)
+        if (article == null)
         {
             await SendNotFoundAsync(ct);
-            await _cache.RemoveAsync(cacheKey, ct);
             return;
         }
 
-        await SendOkAsync(cachedResponse, ct);
+        var response = Map.FromEntity(article);
+
+        await SendOkAsync(response, ct);
     }
 }

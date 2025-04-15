@@ -5,24 +5,15 @@ namespace Newsy.Api.Infrastructure.Persistence.UnitOfWork;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly IDbContext? _dbContext;
-    private IArticleRepository? _articleRepository;
-    private IAuthorRepository? _authorRepository;
+    private readonly IDbContext _dbContext;
+    public IArticleRepository ArticleRepository { get; }
+    public IAuthorRepository AuthorRepository { get; }
 
-
-    public UnitOfWork(IDbContext context)
+    public UnitOfWork(IDbContext context, IArticleRepository articleRepository, IAuthorRepository authorRepository)
     {
         _dbContext = context;
-    }
-
-    public IArticleRepository ArticleRepository
-    {
-        get { return _articleRepository ??= new ArticleRepository(_dbContext); }
-    }
-
-    public IAuthorRepository AuthorRepository
-    {
-        get { return _authorRepository ??= new AuthorRepository(_dbContext); }
+        ArticleRepository = articleRepository;
+        AuthorRepository = authorRepository;
     }
 
     public async Task SaveChangesAsync()
@@ -32,6 +23,6 @@ public class UnitOfWork : IUnitOfWork
 
     public void Dispose()
     {
-        _dbContext?.Dispose();
+        _dbContext.Dispose();
     }
 }

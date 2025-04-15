@@ -3,7 +3,7 @@ using Newsy.Api.Domain;
 
 namespace Newsy.Api.Infrastructure.Persistence.Repositories.Authors;
 
-internal class AuthorRepository : IAuthorRepository
+public class AuthorRepository : IAuthorRepository
 {
     private readonly IDbContext _dbContext;
     public AuthorRepository(IDbContext dbContext)

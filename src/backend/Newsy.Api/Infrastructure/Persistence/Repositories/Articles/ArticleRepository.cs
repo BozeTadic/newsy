@@ -3,7 +3,7 @@ using Newsy.Api.Domain;
 
 namespace Newsy.Api.Infrastructure.Persistence.Repositories.Articles;
 
-internal class ArticleRepository : IArticleRepository
+public class ArticleRepository : IArticleRepository
 {
     private readonly IDbContext _dbContext;
     public ArticleRepository(IDbContext dbContext)
@@ -16,13 +16,6 @@ internal class ArticleRepository : IArticleRepository
         return await _dbContext.Set<Article>()
             .Include(a => a.Author)
             .FirstOrDefaultAsync(a => a.Id == id);
-    }
-
-    public async Task<List<Article>> GetAllAsync()
-    {
-        return await _dbContext.Set<Article>()
-            .Include(a => a.Author)
-            .ToListAsync();
     }
 
     public async Task<List<Article>> GetAllAsync(int pageNumber, int pageSize)

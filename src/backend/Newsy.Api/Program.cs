@@ -5,6 +5,8 @@ using Newsy.Api.Infrastructure.Persistence;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.Extensions.Caching.Hybrid;
+using Newsy.Api.Infrastructure.Persistence.Repositories.Articles;
+using Newsy.Api.Infrastructure.Persistence.Repositories.Authors;
 using Newsy.Api.Infrastructure.Persistence.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,9 +17,13 @@ builder.AddServiceDefaults();
 builder.Services
     .AddDbContext<IDbContext, NewsyDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("newsy-local-postgres")));
+
+builder.Services.AddScoped<ArticleRepository>();
+builder.Services.AddScoped<IArticleRepository, CachedArticleRepository>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddHybridCache(options => 
+builder.Services.AddHybridCache(options =>
     options.DefaultEntryOptions = new HybridCacheEntryOptions()
     {
         LocalCacheExpiration = TimeSpan.FromMinutes(5),

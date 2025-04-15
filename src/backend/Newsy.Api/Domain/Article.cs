@@ -1,4 +1,6 @@
-﻿namespace Newsy.Api.Domain;
+﻿using System.Text.Json.Serialization;
+
+namespace Newsy.Api.Domain;
 
 public class Article
 {
@@ -8,5 +10,6 @@ public class Article
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public int AuthorId { get; set; }
+    [JsonIgnore]
     public Author? Author { get; set; }
 }

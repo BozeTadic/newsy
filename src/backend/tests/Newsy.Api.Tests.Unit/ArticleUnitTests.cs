@@ -1,5 +1,4 @@
 ﻿using FastEndpoints;
-using Microsoft.Extensions.Caching.Hybrid;
 using Moq;
 using Newsy.Api.Features.Articles;
 using Newsy.Api.Infrastructure.Persistence.UnitOfWork;
@@ -13,9 +12,8 @@ public class ArticleUnitTests
     {
         //Arrange
         var mockOfWork = new Mock<IUnitOfWork>();
-        var mockCache = new Mock<HybridCache>();
         var request = new CreateArticleRequest("Clickbait title", "No actual content");
-        var endpoint = Factory.Create<CreateArticleEndpoint>(mockOfWork.Object, mockCache.Object);
+        var endpoint = Factory.Create<CreateArticleEndpoint>(mockOfWork.Object);
 
         // Act
         await endpoint.HandleAsync(request, CancellationToken.None);
